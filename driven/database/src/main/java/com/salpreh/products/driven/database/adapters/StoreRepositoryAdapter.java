@@ -29,4 +29,9 @@ public class StoreRepositoryAdapter implements StoreRepositoryPort {
     return storeRepositoryPort.findAll(PageRequest.of(page, size))
       .map(mapper::toModel);
   }
+
+  @Override
+  public boolean existsByCode(long code) {
+    return storeRepositoryPort.existsById(code);
+  }
 }

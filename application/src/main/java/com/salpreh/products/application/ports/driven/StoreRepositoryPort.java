@@ -7,4 +7,5 @@ import org.springframework.data.domain.Page;
 public interface StoreRepositoryPort {
   Optional<Store> findByCode(long code);
   Page<Store> findAll(int page, int size);
+  boolean existsByCode(long code);
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SonarLintProjectSettings">
+    <option name="moduleMapping">
+      <map>
+        <entry key="application" value="workshop-back-web-products-application" />
+        <entry key="boot" value="workshop-back-web-products-boot" />
+        <entry key="database" value="workshop-web-products-database" />
+        <entry key="rest-api" value="workshop-back-web-products-api-rest" />
+      </map>
+    </option>
+  </component>
+</project>

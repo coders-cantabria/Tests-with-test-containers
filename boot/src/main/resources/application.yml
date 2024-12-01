@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  application.name: workshop-web-products
+  flyway:
+    locations: classpath:migration/versions
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/examples
+    username: sa
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+# Actuator endpoints configuration
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: [ info, health, metrics, prometheus ]

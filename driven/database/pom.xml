@@ -32,7 +32,6 @@
     </dependency>
 
   </dependencies>
-
   <build>
     <resources>
       <resource>
@@ -43,22 +42,5 @@
         <filtering>true</filtering>
       </resource>
     </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
-                <configuration>
-                    <annotationProcessorPaths combine.children="append">
-                      <path>
-                        <groupId>org.hibernate.orm</groupId>
-                        <artifactId>hibernate-jpamodelgen</artifactId>
-                        <version>${hibernate.version}</version>
-                      </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
-
 </project>

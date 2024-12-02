@@ -62,3 +62,13 @@ create table products_suppliers (
     references suppliers
 );
 
+create table pallets (
+  id varchar(18),
+  product_barcode varchar(255),
+  store_code bigint,
+  supplier_id bigint,
+  batch_id varchar(20),
+  units int,
+  production_date date,
+  constraint pallets_pk primary key (id)
+);

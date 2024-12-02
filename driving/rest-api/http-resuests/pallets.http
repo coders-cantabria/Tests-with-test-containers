@@ -1,0 +1,17 @@
+### GET decode valid ean code
+GET http://localhost:8080/pallet/decode?eanCode=0012345678912345678901000000000000011012*11220101412000000000000241000000000030013735*
+
+### GET decode invalid ean code (missing required)
+GET http://localhost:8080/pallet/decode?eanCode=01123456789123451012*11220101
+
+### GET decode invalid ean code (unknown IA)
+GET http://localhost:8080/pallet/decode?eanCode=0012345678912345678901123456789123459912*11220101
+
+### GET decode invalid ean code (unknown Product)
+GET http://localhost:8080/pallet/decode?eanCode=0012345678912345678901900000000000011012*11220101412000000000000241000000000030013735*
+
+### POST create a pallet with previous stock
+POST http://localhost:8080/pallet?eanCode=0012345678912345678901000000000000011012*11220101412000000000000241000000000030013735*
+
+### POST create a pallet with no previous stock
+POST http://localhost:8080/pallet?eanCode=0012345678912345679901000000000000021012*11220101412000000000000241000000000030013735*

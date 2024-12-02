@@ -1,0 +1,5 @@
+### GET request to example server
+GET http://localhost:8080/stores?page=0&size=10
+
+### GET product
+GET http://localhost:8080/stores/3001

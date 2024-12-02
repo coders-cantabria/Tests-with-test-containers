@@ -5,7 +5,7 @@ spring:
   application.name: workshop-web-products
   flyway:
     enabled: true
-    locations: classpath:migration/versions
+    locations: classpath:migration/versions,classpath:migration/develop
 
   datasource:
     url: jdbc:postgresql://localhost:5432/products

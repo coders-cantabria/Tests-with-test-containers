@@ -13,7 +13,15 @@ public class StoreStock {
 
   private Long storeCode;
   private String productBarcode;
-  private long quantity;
+  @Builder.Default
+  private long quantity = 0;
+
+  public static StoreStock of(Long storeCode, String productBarcode) {
+    return StoreStock.builder()
+        .storeCode(storeCode)
+        .productBarcode(productBarcode)
+        .build();
+  }
 
   public void addQuantity(long quantity) {
     this.quantity += quantity;

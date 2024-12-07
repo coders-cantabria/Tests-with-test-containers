@@ -1,3 +1,5 @@
+CREATE EXTENSION unaccent;
+
 create sequence address_id_seq;
 create table addresses (
   id bigint not null,

@@ -2,10 +2,14 @@ package com.salpreh.products.driving.api.adapters;
 
 import com.salpreh.products.application.models.Product;
 import com.salpreh.products.application.models.commands.UpsertProductCommand;
+import com.salpreh.products.application.models.commons.Range;
+import com.salpreh.products.application.models.filters.ProductFilter;
 import com.salpreh.products.application.ports.driving.ProductReadUseCasePort;
 import com.salpreh.products.application.ports.driving.ProductWriteUseCasePort;
 import com.salpreh.products.driving.api.mappers.ApiMapper;
 import com.salpreh.products.driving.api.models.ApiPage;
+import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +42,22 @@ public class ProductController {
   @GetMapping
   public ResponseEntity<ApiPage<Product>> getProducts(
     @RequestParam(defaultValue = "0") int page,
-    @RequestParam(defaultValue = "10") int size
+    @RequestParam(defaultValue = "10") int size,
+    @RequestParam String search,
+    @RequestParam List<Double> purchasePriceRange,
+    @RequestParam List<Double> sellingPriceRange,
+    @RequestParam Set<String> tags,
+    @RequestParam Set<Long> supplierIds
   ) {
-    var products = mapper.toApiPage(productReadUseCase.getAll(page, size));
+    var filter = ProductFilter.builder()
+      .search(search)
+      .purchasePriceRange(Range.of(purchasePriceRange))
+      .sellingPriceRange(Range.of(sellingPriceRange))
+      .tags(tags)
+      .supplierIds(supplierIds)
+      .build();
+
+    var products = mapper.toApiPage(productReadUseCase.getAll(page, size, filter));
 
     return ResponseEntity.ok(products);
   }

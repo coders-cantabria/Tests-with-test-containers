@@ -12,7 +12,7 @@ INSERT INTO addresses(id, city, country_code, street, zip_code) VALUES(1, 'Valen
 INSERT INTO addresses(id, city, country_code, street, zip_code) VALUES(2, 'Valencia', 'ES', 'Carrer Andres Estelles, 34', '46002');
 INSERT INTO addresses(id, city, country_code, street, zip_code) VALUES(3, 'Valencia', 'ES', 'Carrer Jaume I, 12', '46002');
 
-INSERT INTO suppliers(billing_address_id, id, iban, name) VALUES(1, 1, 'ES6621000418401234567891', 'La Fallera');
+INSERT INTO suppliers(billing_address_id, id, iban, name) VALUES(1, 1, 'ES6621000418401234567891', 'Arroces la Fallera');
 INSERT INTO suppliers(billing_address_id, id, iban, name) VALUES(2, 2, 'ES6621000418401234567892', 'Arroces del Ebro');
 INSERT INTO suppliers(billing_address_id, id, iban, name) VALUES(3, 3, 'ES6621000418401234567893', 'Leche y Repostería S.A.');
 ALTER SEQUENCE address_id_seq RESTART WITH 4;

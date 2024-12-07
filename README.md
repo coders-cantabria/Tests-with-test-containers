@@ -18,11 +18,11 @@ We have 3 separated APIs:
 
 The more interesting part here is the pallet API. The barcode of a pallet has to be decoded in order to process it.
 The barcode is composed of IAs, which are a 2-3 digit indicator that tells us what kind of information comes next and how long it is. The IAs are:
-- **00**: The next 18 digits are the pallet ID.
-- **01**: The next 14 digits are the product ID.
-- **412**: The next 13 digits are the supplier ID.
-- **410**: The next 13 digits are the delivery site ID (store ID for us).
-- **37**: The next 1 to 8 digits are the quantity of products (the symbol `*` is used to mark the end)
+- **00**: The next 18 digits are the pallet ID. `[Required]`
+- **01**: The next 14 digits are the product ID. `[Required]`
+- **412**: The next 13 digits are the supplier ID. `[Required]`
+- **410**: The next 13 digits are the delivery site ID (store ID for us). `[Required]`
+- **37**: The next 1 to 8 digits are the quantity of products (the symbol `*` is used to mark the end) `[Required]`
 - **10**: The text 1 to 20 digits are the batch id (the symbol `*` is used to mark the end)
 - **11**: The next 6 digits are the expiration date in the format `yyMMdd`.
 

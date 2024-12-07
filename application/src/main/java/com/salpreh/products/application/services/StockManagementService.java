@@ -5,6 +5,7 @@ import com.salpreh.products.application.models.events.StockUpdateEvent;
 import com.salpreh.products.application.ports.driven.ProductRepositoryPort;
 import com.salpreh.products.application.ports.driven.StoreRepositoryPort;
 import com.salpreh.products.application.ports.driven.StoreStockRepositoryPort;
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -28,6 +29,9 @@ public class StockManagementService {
   public void managePalletStock(StockUpdateEvent stockUpdate) {
     if (!isValid(stockUpdate)) return;
 
+    // Simulate a long-running process
+    updateForecastCalculations(stockUpdate);
+
     StoreStock stock = storeStockRepositoryPort.findById(stockUpdate.getStoreCode(), stockUpdate.getProductBarcode())
       .orElseGet(() -> StoreStock.of(stockUpdate.getStoreCode(), stockUpdate.getProductBarcode()));
 
@@ -46,5 +50,13 @@ public class StockManagementService {
     }
 
     return true;
+  }
+
+  private void updateForecastCalculations(StockUpdateEvent stockUpdate) {
+    try {
+      Thread.sleep(Duration.ofSeconds(3).toMillis());
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

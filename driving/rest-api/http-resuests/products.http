@@ -1,6 +1,9 @@
 ### GET products
 GET http://localhost:8080/products?page=0&size=10
 
+### GET products
+GET http://localhost:8080/products?page=0&size=10&tags=lacteos,arroz&suppliers=1,3&purchasePriceRange=1,2
+
 ### GET product
 GET http://localhost:8080/products/00000000000001
 

@@ -1,6 +1,7 @@
 package com.salpreh.products.application.usecases;
 
 import com.salpreh.products.application.models.Product;
+import com.salpreh.products.application.models.filters.ProductFilter;
 import com.salpreh.products.application.ports.driven.ProductRepositoryPort;
 import com.salpreh.products.application.ports.driving.ProductReadUseCasePort;
 import java.util.Optional;
@@ -23,8 +24,8 @@ public class ProductReadUseCase implements ProductReadUseCasePort {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<Product> getAll(int page, int size) {
-    return productRepositoryPort.findAll(page, size);
+  public Page<Product> getAll(int page, int size, ProductFilter filter) {
+    return productRepositoryPort.findAll(page, size, filter);
   }
 
   @Override

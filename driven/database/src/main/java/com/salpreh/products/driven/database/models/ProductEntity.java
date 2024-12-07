@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -42,7 +43,10 @@ public class ProductEntity {
 
   @ElementCollection
   @JoinTable(name = "products_tags")
-  public List<String> tags = new ArrayList<>();
+  public Set<String> tags = new HashSet<>();
+
+  @OneToMany(mappedBy = "product", cascade = {CascadeType.REFRESH}, orphanRemoval = true)
+  public List<StoreStockEntity> stock = new ArrayList<>();
 
   @Override
   public boolean equals(Object o) {

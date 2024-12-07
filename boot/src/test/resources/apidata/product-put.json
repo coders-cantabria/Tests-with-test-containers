@@ -1,0 +1,9 @@
+{
+  "name": "Arroz con leche",
+  "description": "Arroz con leche 100g",
+  "purchasePrice": 4.5,
+  "sellingPrice": 5.5,
+  "imageUrl": "https://products.s3.aws.com/acl-11.jpg",
+  "tags": ["postres"],
+  "suppliers": [1]
+}

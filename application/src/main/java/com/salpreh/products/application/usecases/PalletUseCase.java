@@ -21,6 +21,7 @@ public class PalletUseCase implements PalletUseCasePort {
   private final ApplicationEventPublisher eventPublisher;
 
   @Override
+  @Transactional(readOnly = true)
   public Pallet decodeEan128(String ean) {
     return eanDecoder.decodeEan128(ean);
   }

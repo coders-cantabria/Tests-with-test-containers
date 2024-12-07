@@ -43,9 +43,9 @@ public class ProductEntity {
 
   @ElementCollection
   @JoinTable(name = "products_tags")
-  public List<String> tags = new ArrayList<>();
+  public Set<String> tags = new HashSet<>();
 
-  @OneToMany(mappedBy = "product", cascade = {CascadeType.REFRESH})
+  @OneToMany(mappedBy = "product", cascade = {CascadeType.REFRESH}, orphanRemoval = true)
   public List<StoreStockEntity> stock = new ArrayList<>();
 
   @Override

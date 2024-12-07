@@ -43,11 +43,11 @@ public class ProductController {
   public ResponseEntity<ApiPage<Product>> getProducts(
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "10") int size,
-    @RequestParam String search,
-    @RequestParam List<Double> purchasePriceRange,
-    @RequestParam List<Double> sellingPriceRange,
-    @RequestParam Set<String> tags,
-    @RequestParam Set<Long> supplierIds
+    @RequestParam(required = false) String search,
+    @RequestParam(required = false) List<Double> purchasePriceRange,
+    @RequestParam(required = false) List<Double> sellingPriceRange,
+    @RequestParam(required = false) Set<String> tags,
+    @RequestParam(required = false) Set<Long> supplierIds
   ) {
     var filter = ProductFilter.builder()
       .search(search)

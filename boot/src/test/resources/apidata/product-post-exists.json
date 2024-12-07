@@ -1,0 +1,10 @@
+{
+  "name": "Arroz con leche",
+  "description": "Arroz con leche",
+  "purchasePrice": 5.5,
+  "sellingPrice": 6.8,
+  "barcode": "00000000000001",
+  "imageUrl": "https://products.s3.aws.com/000011.jpg",
+  "tags": ["postres", "arroz"],
+  "suppliers": [1, 2]
+}

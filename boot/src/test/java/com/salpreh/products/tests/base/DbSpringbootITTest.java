@@ -1,6 +1,6 @@
-package com.salpreh.products.application.usecases.tests.base;
+package com.salpreh.products.tests.base;
 
-import com.salpreh.products.application.usecases.tests.utils.Scripts;
+import com.salpreh.products.tests.utils.Scripts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;

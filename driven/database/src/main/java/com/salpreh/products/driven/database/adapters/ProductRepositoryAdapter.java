@@ -2,6 +2,7 @@ package com.salpreh.products.driven.database.adapters;
 
 import com.salpreh.products.application.exceptions.ProductNotFoundException;
 import com.salpreh.products.application.exceptions.SupplierNotFoundException;
+import com.salpreh.products.application.exceptions.base.ValidationException;
 import com.salpreh.products.application.models.Product;
 import com.salpreh.products.application.models.commands.UpsertProductCommand;
 import com.salpreh.products.application.models.filters.ProductFilter;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
@@ -31,12 +33,14 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
   private final ProductMapper mapper;
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<Product> findByBarcode(String barcode) {
     return productRepository.findById(barcode)
       .map(mapper::toModel);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Page<Product> findAll(int page, int size, ProductFilter filter) {
     Specification<ProductEntity> spec = ProductFiltering.process(filter);
     return productRepository.findAll(spec, PageRequest.of(page, size))
@@ -45,6 +49,9 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
 
   @Override
   public Product create(UpsertProductCommand createCommand) {
+    if (productRepository.existsById(createCommand.barcode()))
+      throw new ValidationException("Product with barcode %s already exists".formatted(createCommand.barcode()));
+
     ProductEntity product = mapper.toEntity(createCommand);
     product.setSuppliers(getSuppliers(createCommand));
 

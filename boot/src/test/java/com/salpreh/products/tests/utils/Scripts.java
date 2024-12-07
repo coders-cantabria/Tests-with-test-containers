@@ -1,4 +1,4 @@
-package com.salpreh.products.application.usecases.tests.utils;
+package com.salpreh.products.tests.utils;
 
 import java.io.InputStream;
 import lombok.experimental.UtilityClass;

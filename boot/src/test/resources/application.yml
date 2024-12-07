@@ -1,0 +1,15 @@
+spring:
+  application.name: workshop-web-products
+  flyway:
+    enabled: true
+    locations: classpath:migration/versions
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/products
+    username: root
+    password: tests
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate.ddl-auto: validate
+    show-sql: true

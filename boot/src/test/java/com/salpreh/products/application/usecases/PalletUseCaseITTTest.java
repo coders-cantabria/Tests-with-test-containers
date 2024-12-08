@@ -1,14 +1,19 @@
 package com.salpreh.products.application.usecases;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.salpreh.products.application.exceptions.EanProcessingException;
 import com.salpreh.products.application.models.Pallet;
+import com.salpreh.products.application.models.StoreStock;
+import com.salpreh.products.application.ports.driven.PalletRepositoryPort;
+import com.salpreh.products.application.ports.driven.StoreStockRepositoryPort;
 import com.salpreh.products.application.ports.driving.PalletUseCasePort;
 import com.salpreh.products.tests.base.DbSpringbootITTest;
 import com.salpreh.products.tests.utils.Scripts;
+import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,10 +25,48 @@ public class PalletUseCaseITTTest extends DbSpringbootITTest {
   @Autowired
   private PalletUseCasePort palletUseCase;
 
+  @Autowired
+  private StoreStockRepositoryPort storeStockRepository;
+
+  @Autowired
+  private PalletRepositoryPort palletRepository;
+
   @BeforeEach
   void setUp() {
     loadData(Scripts.DELETE_ALL);
     loadData(Scripts.DATA_ALL);
+  }
+
+  @Test
+  void givenEanCode_whenCreate_shouldReturnPallet() {
+    // given
+    // ID: 123456789123456789 | ProdID: 00000000000001 | Batch: 12 | ProdDate: 2024-01-01 | SupplID:  0000000000002 | StoreID: 0000000003001 | Quantity: 35
+    String eanCode = "0012345678912345678901000000000000011012*11240101412000000000000241000000000030013735*";
+    Long storeId = 3001L;
+    String productCode = "00000000000001";
+    int quantity = 35;
+
+    StoreStock previousStock = storeStockRepository.findById(storeId, productCode)
+      .orElseThrow();
+
+    // when
+    Pallet pallet = palletUseCase.createPallet(eanCode);
+
+    // then
+    await()
+      .pollDelay(Duration.ofSeconds(1))
+      .untilAsserted(() -> {
+        StoreStock currentStock = storeStockRepository.findById(storeId, productCode)
+          .orElseThrow();
+        assertEquals(previousStock.getQuantity() + quantity, currentStock.getQuantity());
+      });
+
+    assertTrue(palletRepository.existsById(pallet.getId()));
+    assertEquals(productCode, pallet.getProduct().getId());
+    assertNotNull(pallet.getProduct().getName());
+    assertEquals(storeId, pallet.getStore().getId());
+    assertNotNull(pallet.getStore().getName());
+    assertEquals(quantity, pallet.getUnits());
   }
 
   @Test

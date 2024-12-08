@@ -5,6 +5,7 @@ import com.salpreh.products.application.ports.driven.PalletRepositoryPort;
 import com.salpreh.products.driven.database.mappers.PalletMapper;
 import com.salpreh.products.driven.database.models.PalletEntity;
 import com.salpreh.products.driven.database.repositories.PalletRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,12 @@ public class PalletRepositoryAdapter implements PalletRepositoryPort {
 
   private final PalletRepository palletRepository;
   private final PalletMapper mapper;
+
+  @Override
+  public Optional<Pallet> findById(String id) {
+    return palletRepository.findById(id)
+      .map(mapper::toModel);
+  }
 
   @Override
   public boolean existsById(String id) {

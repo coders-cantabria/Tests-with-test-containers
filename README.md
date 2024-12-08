@@ -64,3 +64,9 @@ java -jar driven/database/target/workshop-web-products-database-0.1.0.jar
 When the project is running, you can access the API documentation at:
 - [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 - [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+
+## Exercises 🏋️‍♂️
+- Complete the base test class `BaseDynamicPropsITTest` to bootstrap and configure Postgres and Kafka container
+- Complete consumption tests for `StockUpdateKafkaConsumerITTest`
+- Complete production tests for `PalletUseCaseITTest`
+- Complete full circuit tests (consumption and production) for `PalletUnloadKafkaConsumerITTest`

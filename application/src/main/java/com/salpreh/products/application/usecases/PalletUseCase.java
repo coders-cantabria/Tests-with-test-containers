@@ -7,6 +7,7 @@ import com.salpreh.products.application.ports.driven.PalletRepositoryPort;
 import com.salpreh.products.application.ports.driving.PalletUseCasePort;
 import com.salpreh.products.application.services.Ean128Decoder;
 import com.salpreh.products.application.services.StockManagementService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -47,9 +48,10 @@ public class PalletUseCase implements PalletUseCasePort {
   public Pallet createPallet(Pallet pallet) {
     validateIncomingPallet(pallet);
 
-    if (palletRepositoryPort.existsById(pallet.getId())) {
+    Optional<Pallet> existingPallet = palletRepositoryPort.findById(pallet.getId());
+    if (existingPallet.isPresent()) {
       log.warn("Attempt to register an existing pallet: {}. Skipping creation", pallet.getId());
-      return pallet;
+      return existingPallet.get();
     }
 
     palletRepositoryPort.create(pallet);

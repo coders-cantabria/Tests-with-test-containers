@@ -8,6 +8,7 @@ public class Scripts {
 
   private static final String ROOT = "dbscripts/";
   public static final String DATA_ALL = ROOT + "data-all.sql";
+  public static final String PALLET_CREATE = ROOT + "pallet-create.sql";
   public static final String DELETE_ALL = ROOT + "delete-all.sql";
 
   public static String loadScript(String script) {

@@ -26,6 +26,11 @@
 
     <dependency>
       <groupId>com.salpreh.products</groupId>
+      <artifactId>workshop-web-products-kafka-consumer</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.salpreh.products</groupId>
       <artifactId>workshop-web-products-database</artifactId>
     </dependency>
   </dependencies>

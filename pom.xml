@@ -36,6 +36,11 @@
       </dependency>
       <dependency>
         <groupId>com.salpreh.products</groupId>
+        <artifactId>workshop-web-products-kafka-consumer</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.salpreh.products</groupId>
         <artifactId>workshop-web-products-database</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -82,6 +87,7 @@
     <module>application</module>
     <!-- Adapter implementations-->
     <module>driving/rest-api</module>
+    <module>driving/kafka-consumer</module>
     <module>driven/database</module>
   </modules>
 

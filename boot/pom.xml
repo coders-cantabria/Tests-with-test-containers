@@ -33,6 +33,11 @@
       <groupId>com.salpreh.products</groupId>
       <artifactId>workshop-web-products-database</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.salpreh.products</groupId>
+      <artifactId>workshop-web-products-kafka-producer</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

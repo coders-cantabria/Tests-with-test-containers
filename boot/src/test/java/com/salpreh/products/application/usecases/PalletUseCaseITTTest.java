@@ -21,7 +21,7 @@ public class PalletUseCaseITTTest extends DbSpringbootITTest {
   private PalletUseCasePort palletUseCase;
 
   @BeforeEach
-  void beforeEach() {
+  void setUp() {
     loadData(Scripts.DELETE_ALL);
     loadData(Scripts.DATA_ALL);
   }

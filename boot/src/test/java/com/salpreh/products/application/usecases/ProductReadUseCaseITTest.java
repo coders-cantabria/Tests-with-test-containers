@@ -22,7 +22,7 @@ public class ProductReadUseCaseITTest extends DbSpringbootITTest {
   public ProductReadUseCasePort productReadUseCasePort;
 
   @BeforeEach
-  void beforeEach() {
+  void setUp() {
     loadData(Scripts.DELETE_ALL);
     loadData(Scripts.DATA_ALL);
   }

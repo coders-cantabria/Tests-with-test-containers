@@ -1,0 +1,43 @@
+spring:
+  application.name: workshop-web-products
+  flyway:
+    enabled: true
+    locations: classpath:migration/versions
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/products
+    username: root
+    password: tests
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate.ddl-auto: validate
+    show-sql: true
+
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+      auto-offset-reset: earliest
+      properties:
+        key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        spring.json.trusted.packages: com.salpreh.products.*
+    producer:
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+      properties:
+        key.serializer: org.apache.kafka.common.serialization.StringSerializer
+        value.serializer: org.springframework.kafka.support.serializer.JsonSerializer
+        spring.json.trusted.packages: com.salpreh.products.*
+
+kafka:
+  topics:
+    stock-update:
+      topic: apps.stock-update
+      group-id: web-products-stock-update
+    pallet-unload:
+      topic: apps.pallet-unload-confirmation
+      group-id: web-products-pallet-unload-confirmation
+
+products-app:
+  system-id: WEB-PRODUCTS-APP

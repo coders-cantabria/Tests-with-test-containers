@@ -35,6 +35,18 @@ public class Ean128Decoder {
     return createPallet(processedIAs);
   }
 
+  public boolean validSupplier(Long id) {
+    return supplierRepositoryPort.existsById(id);
+  }
+
+  public boolean validStore(Long code) {
+    return storeRepositoryPort.existsByCode(code);
+  }
+
+  public boolean validProduct(String barcode) {
+    return productRepositoryPort.existsByBarcode(barcode);
+  }
+
   private List<ProcessedIA> process(String ean) {
     char[] currentIA = new char[128];
     char[] eanChars = ean.toCharArray();

@@ -20,4 +20,9 @@ public class SupplierRepositoryAdapter implements SupplierRepositoryPort {
     return supplierRepository.findById(id)
       .map(mapper::toModel);
   }
+
+  @Override
+  public boolean existsById(Long id) {
+    return supplierRepository.existsById(id);
+  }
 }

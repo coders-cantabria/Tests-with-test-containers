@@ -23,10 +23,18 @@ public class StockManagementService {
   private final StoreRepositoryPort storeRepositoryPort;
   private final ProductRepositoryPort productRepositoryPort;
 
+  public void manageStockUpdate(StockUpdateEvent stockUpdate) {
+    processStockUpdate(stockUpdate);
+  }
+
   @Async
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   @TransactionalEventListener
-  public void managePalletStock(StockUpdateEvent stockUpdate) {
+  public void manageStockUpdateAsync(StockUpdateEvent stockUpdate) {
+    processStockUpdate(stockUpdate);
+  }
+
+  private void processStockUpdate(StockUpdateEvent stockUpdate) {
     if (!isValid(stockUpdate)) return;
 
     // Simulate a long-running process

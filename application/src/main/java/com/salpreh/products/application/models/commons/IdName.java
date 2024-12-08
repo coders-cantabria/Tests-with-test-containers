@@ -10,4 +10,8 @@ import lombok.NoArgsConstructor;
 public class IdName<T> {
   public T id;
   public String name;
+
+  public static boolean validId(IdName<?> idName) {
+    return idName != null && idName.id != null;
+  }
 }

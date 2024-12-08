@@ -4,9 +4,9 @@ Spring boot application project with a REST API and a Postgres DB. This repo was
 ## About project 📝
 The project uses hexagonal architecture with Maven multi-module to separate different layers. The different layers are:
 - **application**: Contains the domain and the business logic of the application.
-- **driven**: Contains drive/out ports for the application. Here we have
+- **driven**: Contains driven/out ports for the application. Here we have:
   - **database**: Database adapter with JPA and Postgres.
-- **driving**: Contains driving/in ports for the application. Here we have
+- **driving**: Contains driving/in ports for the application. Here we have:
   - **rest-api**: REST API adapter with Spring Boot web.
 
 ## Business 💼
@@ -25,6 +25,15 @@ The barcode is composed of IAs, which are a 2-3 digit indicator that tells us wh
 - **37**: The next 1 to 8 digits are the quantity of products (the symbol `*` is used to mark the end) `[Required]`
 - **10**: The text 1 to 20 digits are the batch id (the symbol `*` is used to mark the end)
 - **11**: The next 6 digits are the expiration date in the format `yyMMdd`.
+
+
+## Branches 🌳
+- **main**: Contains the initial project with the hexagonal architecture.
+- **testcontainers/demo**: Contains examples about testing domain logic with a Posges DB using Testcontainers.
+- **testcontainers/workshop-db**: Contains the starting point for the workshop about testing the database adapter with Testcontainers.
+- **testcontainers/workshop-db-solution**: Contains our version of the solution for the workshop about testing the database adapter with Testcontainers.
+- **testcontainers/workshop-kafka**: Contains the starting point for the workshop about testing the Kafka adapter with Testcontainers.
+- **testcontainers/workshop-kafka-solution**: Contains our version of the solution for the workshop about testing the Kafka adapter with Testcontainers.
 
 ## How to run 🚀
 ### Requirements 🛠

@@ -38,13 +38,13 @@ public class StockManagementService {
     storeStockRepositoryPort.upsert(stock);
   }
 
-  private boolean isValid(StockUpdateEvent palletCreated) {
-    if (!productRepositoryPort.existsByBarcode(palletCreated.getProductBarcode())) {
-      log.warn("Pallet with non existing product ({}). Stock update skipped.", palletCreated.getProductBarcode());
+  private boolean isValid(StockUpdateEvent stockUpdate) {
+    if (!productRepositoryPort.existsByBarcode(stockUpdate.getProductBarcode())) {
+      log.warn("Event with non existing product ({}). Stock update skipped.", stockUpdate.getProductBarcode());
       return false;
     }
-    if (!storeRepositoryPort.existsByCode(palletCreated.getStoreCode())) {
-      log.warn("Pallet with non existing store ({}). Stock update skipped.", palletCreated.getStoreCode());
+    if (!storeRepositoryPort.existsByCode(stockUpdate.getStoreCode())) {
+      log.warn("Event with non existing store ({}). Stock update skipped.", stockUpdate.getStoreCode());
       return false;
     }
 

@@ -1,4 +1,4 @@
-package com.salpreh.products.driving.consumer.consumers;
+package com.salpreh.products.driving.consumer.adapters;
 
 import com.salpreh.products.application.models.events.StockUpdateEvent;
 import com.salpreh.products.application.ports.driving.StockUpdateUseCasePort;

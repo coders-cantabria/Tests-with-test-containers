@@ -1,4 +1,4 @@
-package com.salpreh.products.driving.consumer.consumers;
+package com.salpreh.products.driving.consumer.adapters;
 
 import com.salpreh.products.application.models.Pallet;
 import com.salpreh.products.application.ports.driving.PalletUseCasePort;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ExternalPalletUnloadKafkaConsumer {
+public class PalletUnloadKafkaConsumer {
 
   private final PalletUseCasePort palletUseCase;
   private final EventMapper mapper;

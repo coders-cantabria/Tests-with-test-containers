@@ -22,7 +22,8 @@ public class StockUpdateKafkaConsumer {
 
   @KafkaListener(
     topics = "${kafka.topics.stock-update.topic}",
-    groupId = "${kafka.topics.stock-update.group-id}"
+    groupId = "${kafka.topics.stock-update.group-id}",
+    containerFactory = "kafkaJsonListenerContainerFactory"
   )
   public void consumeEvent(@Header(KafkaHeaders.RECEIVED_KEY) String key, @Payload ExternalStockUpdateEvent payload) {
     log.info("Stock update event from system {}: {}", key, payload);

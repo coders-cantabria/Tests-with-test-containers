@@ -5,14 +5,11 @@ import com.salpreh.products.application.models.events.StockUpdateEvent;
 import com.salpreh.products.application.ports.driven.ProductRepositoryPort;
 import com.salpreh.products.application.ports.driven.StoreRepositoryPort;
 import com.salpreh.products.application.ports.driven.StoreStockRepositoryPort;
+import com.salpreh.products.application.ports.driving.StockUpdatePublisherPort;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 @Slf4j
 @Service
@@ -22,19 +19,13 @@ public class StockManagementService {
   private final StoreStockRepositoryPort storeStockRepositoryPort;
   private final StoreRepositoryPort storeRepositoryPort;
   private final ProductRepositoryPort productRepositoryPort;
+  private final StockUpdatePublisherPort stockUpdatePublisherPort;
 
-  public void manageStockUpdate(StockUpdateEvent stockUpdate) {
-    processStockUpdate(stockUpdate);
+  public void publishStockUpdate(StockUpdateEvent stockUpdate) {
+    stockUpdatePublisherPort.publishStockUpdate(stockUpdate);
   }
 
-  @Async
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  @TransactionalEventListener
-  public void manageStockUpdateAsync(StockUpdateEvent stockUpdate) {
-    processStockUpdate(stockUpdate);
-  }
-
-  private void processStockUpdate(StockUpdateEvent stockUpdate) {
+  public void processStockUpdate(StockUpdateEvent stockUpdate) {
     if (!isValid(stockUpdate)) return;
 
     // Simulate a long-running process

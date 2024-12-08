@@ -22,7 +22,8 @@ public class ExternalPalletUnloadKafkaConsumer {
 
   @KafkaListener(
     topics = "${kafka.topics.pallet-unload.topic}",
-    groupId = "${kafka.topics.pallet-unload.group-id}"
+    groupId = "${kafka.topics.pallet-unload.group-id}",
+    containerFactory = "kafkaJsonListenerContainerFactory"
   )
   public void consumeEvent(
     @Header(KafkaHeaders.RECEIVED_KEY) String key,

@@ -24,7 +24,7 @@ spring:
       auto-offset-reset: earliest
       properties:
         key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
-        value.deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+        value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
         spring.json.trusted.packages: com.salpreh.products.*
     producer:
       bootstrap-servers: ${spring.kafka.bootstrap-servers}
@@ -41,6 +41,9 @@ kafka:
     pallet-unload:
       topic: apps.pallet-unload-confirmation
       group-id: web-products-pallet-unload-confirmation
+
+products-app:
+  system-id: WEB-PRODUCTS-APP
 
 # Actuator endpoints configuration
 management:

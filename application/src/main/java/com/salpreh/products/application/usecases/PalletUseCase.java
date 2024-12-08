@@ -6,9 +6,9 @@ import com.salpreh.products.application.models.commons.IdName;
 import com.salpreh.products.application.ports.driven.PalletRepositoryPort;
 import com.salpreh.products.application.ports.driving.PalletUseCasePort;
 import com.salpreh.products.application.services.Ean128Decoder;
+import com.salpreh.products.application.services.StockManagementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class PalletUseCase implements PalletUseCasePort {
 
   private final Ean128Decoder eanDecoder;
+  private final StockManagementService stockManagementService;
   private final PalletRepositoryPort palletRepositoryPort;
   private final DomainEventMapper eventMapper;
-
-  private final ApplicationEventPublisher eventPublisher;
 
   @Override
   @Transactional(readOnly = true)
@@ -38,7 +37,7 @@ public class PalletUseCase implements PalletUseCasePort {
       throw new IllegalArgumentException("Pallet already exists");
 
     palletRepositoryPort.create(pallet);
-    eventPublisher.publishEvent(eventMapper.mapToEvent(pallet));
+    stockManagementService.publishStockUpdate(eventMapper.mapToEvent(pallet));
 
     return pallet;
   }
@@ -54,7 +53,7 @@ public class PalletUseCase implements PalletUseCasePort {
     }
 
     palletRepositoryPort.create(pallet);
-    eventPublisher.publishEvent(eventMapper.mapToEvent(pallet));
+    stockManagementService.publishStockUpdate(eventMapper.mapToEvent(pallet));
 
     return pallet;
   }

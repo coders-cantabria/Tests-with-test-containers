@@ -14,6 +14,6 @@ public class StockUpdateUseCase implements StockUpdateUseCasePort {
 
   @Override
   public void processStockUpdate(StockUpdateEvent stockUpdate) {
-    stockManagementService.manageStockUpdate(stockUpdate);
+    stockManagementService.processStockUpdate(stockUpdate);
   }
 }

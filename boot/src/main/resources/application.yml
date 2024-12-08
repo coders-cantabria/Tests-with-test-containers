@@ -33,6 +33,15 @@ spring:
         value.serializer: org.springframework.kafka.support.serializer.JsonSerializer
         spring.json.trusted.packages: com.salpreh.products.*
 
+kafka:
+  topics:
+    stock-update:
+      topic: apps.stock-update
+      group-id: web-products-stock-update
+    pallet-unload:
+      topic: apps.pallet-unload-confirmation
+      group-id: web-products-pallet-unload-confirmation
+
 # Actuator endpoints configuration
 management:
   endpoint:

@@ -104,6 +104,7 @@ public class StockUpdateKafkaConsumerITTest extends BaseDynamicPropsITTest {
     // then
     await()
       .untilAsserted(() -> {
+        assertTrue(capturedOutput.getOut().contains("event from system " + ORIGIN_SYSTEM_ID + " processed")); // Wait until log of event processed issued
         assertTrue(capturedOutput.getOut().contains("non existing product"));
 
         Optional<StoreStock> currentStock = storeStockRepository.findById(storeId, productCode);
@@ -126,6 +127,7 @@ public class StockUpdateKafkaConsumerITTest extends BaseDynamicPropsITTest {
     // then
     await()
       .untilAsserted(() -> {
+        assertTrue(capturedOutput.getOut().contains("event from system " + ORIGIN_SYSTEM_ID + " processed")); // Wait until log of event processed issued
         assertTrue(capturedOutput.getOut().contains("non existing store"));
 
         Optional<StoreStock> currentStock = storeStockRepository.findById(storeId, productCode);

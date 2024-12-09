@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.util.List;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -41,6 +42,8 @@ public class PalletUseCaseITTest extends BaseDynamicPropsITTest {
   @Autowired
   private PalletRepositoryPort palletRepository;
 
+  private KafkaConsumer<String, ExternalStockUpdateEvent> consumer;
+
   @BeforeEach
   void setUp() {
     loadData(Scripts.DELETE_ALL);
@@ -48,6 +51,11 @@ public class PalletUseCaseITTest extends BaseDynamicPropsITTest {
 
     loadData(Scripts.DATA_ALL);
     createTopics(List.of(topic));
+  }
+
+  @AfterEach
+  void tearDown() {
+    if (consumer != null) consumer.close();
   }
 
   @Test
@@ -60,7 +68,7 @@ public class PalletUseCaseITTest extends BaseDynamicPropsITTest {
     int quantity = 10;
     Pallet pallet = createPallet(palletId, productId, supplierId, storeId, quantity);
 
-    KafkaConsumer<String, ExternalStockUpdateEvent> consumer = createConsumer(ExternalStockUpdateEvent.class);
+    consumer = createConsumer(ExternalStockUpdateEvent.class);
     consumer.subscribe(List.of(topic));
 
     // when
@@ -96,7 +104,7 @@ public class PalletUseCaseITTest extends BaseDynamicPropsITTest {
     int quantity = 10;
     Pallet pallet = createPallet(palletId, productId, supplierId, storeId, quantity);
 
-    KafkaConsumer<String, ExternalStockUpdateEvent> consumer = createConsumer(ExternalStockUpdateEvent.class);
+    consumer = createConsumer(ExternalStockUpdateEvent.class);
     consumer.subscribe(List.of(topic));
 
     // when
@@ -122,7 +130,7 @@ public class PalletUseCaseITTest extends BaseDynamicPropsITTest {
 
     loadData(PALLET_CREATE);
 
-    KafkaConsumer<String, ExternalStockUpdateEvent> consumer = createConsumer(ExternalStockUpdateEvent.class);
+    consumer = createConsumer(ExternalStockUpdateEvent.class);
     consumer.subscribe(List.of(topic));
 
     // when

@@ -21,11 +21,6 @@
 
     <dependency>
       <groupId>com.salpreh.products</groupId>
-      <artifactId>workshop-web-products-rest-api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.salpreh.products</groupId>
       <artifactId>workshop-web-products-kafka-consumer</artifactId>
     </dependency>
 
@@ -37,6 +32,11 @@
     <dependency>
       <groupId>com.salpreh.products</groupId>
       <artifactId>workshop-web-products-kafka-producer</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.salpreh.products</groupId>
+      <artifactId>workshop-web-products-rest-api</artifactId>
     </dependency>
   </dependencies>
 

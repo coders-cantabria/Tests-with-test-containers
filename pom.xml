@@ -135,6 +135,7 @@
     <module>driving/kafka-consumer</module>
     <module>driven/database</module>
     <module>driven/kafka-producer</module>
+    <module>driven/rest-api-consumer</module>
   </modules>
 
   <build>

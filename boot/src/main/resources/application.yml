@@ -60,3 +60,7 @@ management:
     web:
       exposure:
         include: [ info, health, metrics, prometheus ]
+
+mockserver:
+  host: localhost
+  port: 1080

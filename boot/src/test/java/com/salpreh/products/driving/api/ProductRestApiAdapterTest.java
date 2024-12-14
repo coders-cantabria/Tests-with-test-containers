@@ -1,6 +1,8 @@
 package com.salpreh.products.driving.api;
 
 import com.salpreh.products.application.models.Product;
+import com.salpreh.products.application.models.commands.UpsertProductCommand;
+import com.salpreh.products.driving.api.models.ApiPage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
@@ -32,8 +34,7 @@ class ProductRestApiAdapterTest {
 
   private static final String MOCKSERVER_IMAGE = "mockserver/mockserver";
   private static final Integer MOCKSERVER_PORT = 1080;
-  private static final String PRODUCTS_MOCKSERVER_PATH = "/products";
-  private static final String PRODUCTS_PATH = "/products-rest";
+  private static final String PRODUCTS_PATH = "/products";
 
   static GenericContainer<?> mockServer = new GenericContainer<>(
     DockerImageName.parse(MOCKSERVER_IMAGE))
@@ -61,7 +62,7 @@ class ProductRestApiAdapterTest {
 
     mockServerResponseGetProducts();
 
-    ResponseEntity<List<Product>> response = testRestTemplate.exchange(
+    ResponseEntity<ApiPage<Product>> response = testRestTemplate.exchange(
       PRODUCTS_PATH,
       HttpMethod.GET,
       null,
@@ -71,7 +72,7 @@ class ProductRestApiAdapterTest {
     Assertions.assertNotNull(response);
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 
-    assertProductsPropertiesFromGetProducts(response.getBody());
+    assertProductsPropertiesFromGetProducts(response.getBody().getData());
   }
 
   private void assertProductsPropertiesFromGetProducts(List<Product> results) {
@@ -93,7 +94,7 @@ class ProductRestApiAdapterTest {
 
     mockServerResponsePostProduct();
 
-    Product product = new Product(
+    UpsertProductCommand upsertProductCommand = new UpsertProductCommand(
       "Barcode name create",
       "Product name create",
       "Description create",
@@ -104,7 +105,7 @@ class ProductRestApiAdapterTest {
       List.of()
     );
 
-    Product response = testRestTemplate.postForObject(PRODUCTS_PATH, product, Product.class);
+    Product response = testRestTemplate.postForObject(PRODUCTS_PATH, upsertProductCommand, Product.class);
 
     Assertions.assertNotNull(response);
 
@@ -135,8 +136,8 @@ class ProductRestApiAdapterTest {
     Assertions.assertEquals("Image url", response.imageUrl());
     Assertions.assertEquals(7.5, response.purchasePrice());
     Assertions.assertEquals(8.5, response.sellingPrice());
-    Assertions.assertEquals(null, response.suppliers());
-    Assertions.assertEquals(null, response.tags());
+    Assertions.assertNull(response.suppliers());
+    Assertions.assertNull(response.tags());
   }
 
   @Test
@@ -144,7 +145,7 @@ class ProductRestApiAdapterTest {
 
     mockServerResponsePutProduct();
 
-    Product product = new Product(
+    UpsertProductCommand upsertProductCommand = new UpsertProductCommand(
       "Barcode name updated",
       "Product name updated",
       "Description updated",
@@ -155,7 +156,7 @@ class ProductRestApiAdapterTest {
       List.of()
     );
 
-    HttpEntity<Product> requestEntity = new HttpEntity<>(product);
+    HttpEntity<UpsertProductCommand> requestEntity = new HttpEntity<>(upsertProductCommand);
 
     ResponseEntity<Product> response = testRestTemplate.exchange(
       String.format("%s/%d", PRODUCTS_PATH, 1),
@@ -203,7 +204,7 @@ class ProductRestApiAdapterTest {
     mockServerClient.when(
       HttpRequest.request()
         .withMethod("GET")
-        .withPath(PRODUCTS_MOCKSERVER_PATH)
+        .withPath(PRODUCTS_PATH)
     ).respond(
       HttpResponse.response()
         .withStatusCode(200)
@@ -236,7 +237,7 @@ class ProductRestApiAdapterTest {
     mockServerClient.when(
       HttpRequest.request()
         .withMethod("POST")
-        .withPath(PRODUCTS_MOCKSERVER_PATH)
+        .withPath(PRODUCTS_PATH)
     ).respond(
       HttpResponse.response()
         .withStatusCode(200)
@@ -259,7 +260,7 @@ class ProductRestApiAdapterTest {
     mockServerClient.when(
       HttpRequest.request()
         .withMethod("GET")
-        .withPath(String.format("%s/%d", PRODUCTS_MOCKSERVER_PATH, 1))
+        .withPath(String.format("%s/%d", PRODUCTS_PATH, 1))
     ).respond(
       HttpResponse.response()
         .withStatusCode(201)
@@ -282,7 +283,7 @@ class ProductRestApiAdapterTest {
     mockServerClient.when(
       HttpRequest.request()
         .withMethod("PUT")
-        .withPath(String.format("%s/%d", PRODUCTS_MOCKSERVER_PATH, 1))
+        .withPath(String.format("%s/%d", PRODUCTS_PATH, 1))
     ).respond(
       HttpResponse.response()
         .withStatusCode(200)
@@ -305,7 +306,7 @@ class ProductRestApiAdapterTest {
     mockServerClient.when(
       HttpRequest.request()
         .withMethod("DELETE")
-        .withPath(String.format("%s/%d", PRODUCTS_MOCKSERVER_PATH, 1))
+        .withPath(String.format("%s/%d", PRODUCTS_PATH, 1))
     ).respond(
       HttpResponse.response()
         .withStatusCode(204)

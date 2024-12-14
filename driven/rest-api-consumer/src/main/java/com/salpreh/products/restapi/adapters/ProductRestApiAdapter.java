@@ -1,68 +1,96 @@
 package com.salpreh.products.restapi.adapters;
 
 import com.salpreh.products.application.models.Product;
-import com.salpreh.products.application.models.commons.IdName;
-import com.salpreh.products.application.ports.driven.ProductRestApiPort;
+import com.salpreh.products.application.models.commands.UpsertProductCommand;
+import com.salpreh.products.application.models.filters.ProductFilter;
+import com.salpreh.products.application.ports.driven.ProductRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class ProductRestApiAdapter implements ProductRestApiPort {
+public class ProductRestApiAdapter implements ProductRepositoryPort {
 
-    private final WebClient webClient;
+  private final WebClient webClient;
 
-    @Override
-    public Mono<List<Product>> getProducts() {
+  @Override
+  public Optional<Product> findByBarcode(String barcode) {
 
-      return webClient.get()
-                .uri("products")
-                .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<>() {});
-    }
+    return Optional.ofNullable(
+      webClient.get()
+        .uri("/products/{id}", barcode)
+        .retrieve()
+        .bodyToMono(Product.class)
+        .block()
+    );
+  }
 
-    @Override
-    public Mono<Product> createProduct(Product product) {
+  @Override
+  public Page<Product> findAll(int page, int size, ProductFilter filter) {
 
-        return webClient.post()
-                    .uri("products")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(product)
-                    .retrieve()
-                    .bodyToMono(Product.class);
-    }
+    Mono<List<Product>> products = webClient.get()
+      .uri("products")
+      .retrieve()
+      .bodyToMono(new ParameterizedTypeReference<List<Product>>() {});
 
-    @Override
-    public Mono<Product> getProduct(IdName<String> id) {
+    List<Product> productList = products.block();
 
-        return webClient.get()
-                .uri("/products/{id}", id.getId())
-                .retrieve()
-                .bodyToMono(Product.class);
-    }
+    return new PageImpl<>(
+      (productList != null) ? productList : List.of(),
+      PageRequest.of(0, 5),
+      2
+    );
+  }
 
-    @Override
-    public Mono<Product> updateProduct(IdName<String> id, Product product) {
+  @Override
+  public Product create(UpsertProductCommand createCommand) {
 
-        return webClient.put()
-                .uri("/products/{id}", id.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(product)
-                .retrieve()
-                .bodyToMono(Product.class);
-    }
+    return webClient.post()
+      .uri("products")
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(createCommand)
+      .retrieve()
+      .bodyToMono(Product.class)
+      .block();
+  }
 
-    @Override
-    public void deleteProduct(IdName<String> id) {
+  @Override
+  public Product update(String barcode, UpsertProductCommand updateCommand) {
+    return webClient.put()
+      .uri("/products/{id}", barcode)
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(updateCommand)
+      .retrieve()
+      .bodyToMono(Product.class)
+      .block();
+  }
 
-        webClient.delete()
-                .uri("/products/{id}", id.getId())
-                .retrieve();
-    }
+  @Override
+  public boolean existsByBarcode(String barcode) {
+
+    return Boolean.TRUE.equals(webClient.get()
+      .uri("products/exists/{id}", barcode)
+      .retrieve()
+      .bodyToMono(Boolean.class)
+      .block());
+  }
+
+  @Override
+  public void delete(String barcode) {
+
+    webClient.delete()
+      .uri("/products/{id}", barcode)
+      .retrieve();
+  }
 }

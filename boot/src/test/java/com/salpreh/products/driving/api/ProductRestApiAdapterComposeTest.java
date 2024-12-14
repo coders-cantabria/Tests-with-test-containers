@@ -1,6 +1,8 @@
 package com.salpreh.products.driving.api;
 
 import com.salpreh.products.application.models.Product;
+import com.salpreh.products.application.models.commands.UpsertProductCommand;
+import com.salpreh.products.driving.api.models.ApiPage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ class ProductRestApiAdapterComposeTest {
 
   private static final Integer MOCKSERVER_PORT = 1080;
   private static final String MOCKSERVER_SERVICE_NAME = "mockServer_1";
-  private static final String PRODUCTS_PATH = "/products-rest";
+  private static final String PRODUCTS_PATH = "/products";
 
   @Container
   static DockerComposeContainer<?> dockerComposeContainer = new DockerComposeContainer(
@@ -58,7 +60,7 @@ class ProductRestApiAdapterComposeTest {
   @Test
   void getProducts() {
 
-    ResponseEntity<List<Product>> response = testRestTemplate.exchange(
+    ResponseEntity<ApiPage<Product>> response = testRestTemplate.exchange(
       PRODUCTS_PATH,
       HttpMethod.GET,
       null,
@@ -68,7 +70,7 @@ class ProductRestApiAdapterComposeTest {
     Assertions.assertNotNull(response);
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 
-    assertProductsPropertiesFromGetProducts(response.getBody());
+    assertProductsPropertiesFromGetProducts(response.getBody().getData());
   }
 
   private void assertProductsPropertiesFromGetProducts(List<Product> results) {
@@ -88,7 +90,7 @@ class ProductRestApiAdapterComposeTest {
   @Test
   void createProduct() {
 
-    Product product = new Product(
+        UpsertProductCommand upsertProductCommand = new UpsertProductCommand(
       "Barcode name create",
       "Product name create",
       "Description create",
@@ -99,7 +101,7 @@ class ProductRestApiAdapterComposeTest {
       List.of()
     );
 
-    Product response = testRestTemplate.postForObject(PRODUCTS_PATH, product, Product.class);
+    Product response = testRestTemplate.postForObject(PRODUCTS_PATH, upsertProductCommand, Product.class);
 
     Assertions.assertNotNull(response);
 
@@ -135,7 +137,7 @@ class ProductRestApiAdapterComposeTest {
   @Test
   void updateProduct() {
 
-    Product product = new Product(
+    UpsertProductCommand upsertProductCommand = new UpsertProductCommand(
       "Barcode name updated",
       "Product name updated",
       "Description updated",
@@ -146,7 +148,7 @@ class ProductRestApiAdapterComposeTest {
       List.of()
     );
 
-    HttpEntity<Product> requestEntity = new HttpEntity<>(product);
+    HttpEntity<UpsertProductCommand> requestEntity = new HttpEntity<>(upsertProductCommand);
 
     ResponseEntity<Product> response = testRestTemplate.exchange(
       String.format("%s/%d", PRODUCTS_PATH, 1),

@@ -29,26 +29,13 @@
         <artifactId>workshop-web-products-application</artifactId>
         <version>${project.version}</version>
       </dependency>
+
       <dependency>
         <groupId>com.salpreh.products</groupId>
         <artifactId>workshop-web-products-rest-api</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>com.salpreh.products</groupId>
-        <artifactId>workshop-web-products-kafka-consumer</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.salpreh.products</groupId>
-        <artifactId>workshop-web-products-database</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.salpreh.products</groupId>
-        <artifactId>workshop-web-products-kafka-producer</artifactId>
-        <version>${project.version}</version>
-      </dependency>
+
       <dependency>
         <groupId>com.salpreh.products</groupId>
         <artifactId>workshop-web-products-rest-api-consumer</artifactId>
@@ -137,9 +124,6 @@
     <module>application</module>
     <!-- Adapter implementations-->
     <module>driving/rest-api</module>
-    <module>driving/kafka-consumer</module>
-    <module>driven/database</module>
-    <module>driven/kafka-producer</module>
     <module>driven/rest-api-consumer</module>
   </modules>
 

@@ -1,112 +1,123 @@
 [
-    {
-      "httpRequest": {
-        "method": "GET",
-        "path": "/products"
-      },
-      "httpResponse": {
-        "statusCode": 200,
-        "body": [
-          {
-            "barcode": "Barcode name",
-            "name": "Product name",
-            "description": "Description",
-            "imageUrl": "Image url",
-            "purchasePrice": 7.5,
-            "sellingPrice": 8.5
-          },
-          {
-            "barcode": "Barcode name 2",
-            "name": "Product name 2",
-            "description": "Description 2",
-            "imageUrl": "Image url 2",
-            "purchasePrice": 8.5,
-            "sellingPrice": 9.5
-          }
-        ],
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      }
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/products"
     },
-    {
-      "httpRequest": {
-        "method": "POST",
-        "path": "/products",
-        "body": {
-          "type": "JSON",
-          "json": {
-            "title": "New Post Title",
-            "content": "This is the content of the new post.",
-            "author": "User"
-          }
-        }
-      },
-      "httpResponse": {
-        "statusCode": 201,
-        "body": {
-          "id": 3,
-          "title": "New Post Title",
-          "content": "This is the content of the new post.",
-          "author": "User"
+    "httpResponse": {
+      "statusCode": 200,
+      "body": [
+        {
+          "barcode": "Barcode name",
+          "name": "Product name",
+          "description": "Description",
+          "imageUrl": "Image url",
+          "purchasePrice": 7.5,
+          "sellingPrice": 8.5
         },
-        "headers": {
-          "Content-Type": "application/json"
+        {
+          "barcode": "Barcode name 2",
+          "name": "Product name 2",
+          "description": "Description 2",
+          "imageUrl": "Image url 2",
+          "purchasePrice": 8.5,
+          "sellingPrice": 9.5
         }
-      }
-    },
-    {
-      "httpRequest": {
-        "method": "GET",
-        "path": "/products/1"
-      },
-      "httpResponse": {
-        "statusCode": 200,
-        "body": {
-          "id": 1,
-          "title": "Breaking News: MockServer is Awesome!",
-          "content": "MockServer makes testing APIs effortless.",
-          "author": "Admin",
-          "createdAt": "2024-11-17T10:00:00Z"
-        },
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      }
-    },
-    {
-      "httpRequest": {
-        "method": "PUT",
-        "path": "/products/1",
-        "body": {
-          "type": "JSON",
-          "json": {
-            "title": "Updated Title",
-            "content": "Updated content of the post."
-          }
-        }
-      },
-      "httpResponse": {
-        "statusCode": 200,
-        "body": {
-          "id": 1,
-          "title": "Updated Title",
-          "content": "Updated content of the post.",
-          "author": "Admin",
-          "createdAt": "2024-11-17T10:00:00Z"
-        },
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      }
-    },
-    {
-      "httpRequest": {
-        "method": "DELETE",
-        "path": "/products/1"
-      },
-      "httpResponse": {
-        "statusCode": 204
+      ],
+      "headers": {
+        "Content-Type": "application/json"
       }
     }
-  ]
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/products",
+      "body": {
+        "type": "JSON",
+        "json": {
+          "barcode": "Barcode name create",
+          "name": "Product name create",
+          "description": "Description create",
+          "imageUrl": "Image url create",
+          "purchasePrice": 1.2,
+          "sellingPrice": 1.8
+        }
+      }
+    },
+    "httpResponse": {
+      "statusCode": 201,
+      "body": {
+        "barcode": "Barcode name create",
+        "name": "Product name create",
+        "description": "Description create",
+        "imageUrl": "Image url create",
+        "purchasePrice": 1.2,
+        "sellingPrice": 1.8
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/products/1"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": {
+        "barcode": "Barcode name",
+        "name": "Product name",
+        "description": "Description",
+        "imageUrl": "Image url",
+        "purchasePrice": 7.5,
+        "sellingPrice": 8.5
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "PUT",
+      "path": "/products/1",
+      "body": {
+        "type": "JSON",
+        "json": {
+          "barcode": "Barcode name updated",
+          "name": "Product name updated",
+          "description": "Description updated",
+          "imageUrl": "Image url updated",
+          "purchasePrice": 7.6,
+          "sellingPrice": 8.6
+        }
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": {
+        "barcode": "Barcode name updated",
+        "name": "Product name updated",
+        "description": "Description updated",
+        "imageUrl": "Image url updated",
+        "purchasePrice": 7.6,
+        "sellingPrice": 8.6
+      },
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "DELETE",
+      "path": "/products/1"
+    },
+    "httpResponse": {
+      "statusCode": 204
+    }
+  }
+]

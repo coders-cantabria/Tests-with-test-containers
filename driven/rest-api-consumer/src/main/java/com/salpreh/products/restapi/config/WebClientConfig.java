@@ -17,10 +17,12 @@ public class WebClientConfig {
     @Bean
     public WebClient webClient(WebClient.Builder builder) {
 
-        return builder.baseUrl(
-                        String.format("http://%s:%s",
-                                mockServerHost,
-                                mockServerPort))
-                .build();
+      return builder.baseUrl(
+          String.format(
+            "http://%s:%s",
+            mockServerHost,
+            mockServerPort
+          ))
+        .build();
     }
 }

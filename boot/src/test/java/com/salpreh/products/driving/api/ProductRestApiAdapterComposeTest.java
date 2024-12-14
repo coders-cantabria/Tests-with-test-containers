@@ -3,10 +3,6 @@ package com.salpreh.products.driving.api;
 import com.salpreh.products.application.models.Product;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockserver.client.MockServerClient;
-import org.mockserver.model.Header;
-import org.mockserver.model.HttpRequest;
-import org.mockserver.model.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -17,40 +13,43 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
-
+import java.io.File;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockserver.model.JsonBody.json;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ProductRestApiAdapterTest {
+class ProductRestApiAdapterComposeTest {
 
-  private static final String MOCKSERVER_IMAGE = "mockserver/mockserver";
   private static final Integer MOCKSERVER_PORT = 1080;
-  private static final String PRODUCTS_MOCKSERVER_PATH = "/products";
+  private static final String MOCKSERVER_SERVICE_NAME = "mockServer_1";
   private static final String PRODUCTS_PATH = "/products-rest";
 
-  static GenericContainer<?> mockServer = new GenericContainer<>(
-    DockerImageName.parse(MOCKSERVER_IMAGE))
-    .withExposedPorts(MOCKSERVER_PORT);
-
-  static MockServerClient mockServerClient;
+  @Container
+  static DockerComposeContainer<?> dockerComposeContainer = new DockerComposeContainer(
+    new File("src/test/resources/compose/compose.yml"))
+    .withExposedService(MOCKSERVER_SERVICE_NAME, MOCKSERVER_PORT);
 
   @DynamicPropertySource
   static void mockServerProperties(DynamicPropertyRegistry registry) {
 
-    mockServer.start();
+    dockerComposeContainer.start();
 
     // Set to the application properties the obtained values
-    registry.add("mockserver.host", mockServer::getHost);
-    registry.add("mockserver.port", mockServer::getFirstMappedPort);
-
-    mockServerClient = new MockServerClient(mockServer.getHost(), mockServer.getFirstMappedPort());
+    // In this case, the service name must be specified because in docker compose we can
+    // use as many services as we need
+    registry.add(
+      "mockserver.host",
+      () -> dockerComposeContainer.getServiceHost(MOCKSERVER_SERVICE_NAME, MOCKSERVER_PORT)
+    );
+    registry.add(
+      "mockserver.port",
+      () -> dockerComposeContainer.getServicePort(MOCKSERVER_SERVICE_NAME, MOCKSERVER_PORT)
+    );
   }
 
   @Autowired
@@ -58,8 +57,6 @@ class ProductRestApiAdapterTest {
 
   @Test
   void getProducts() {
-
-    mockServerResponseGetProducts();
 
     ResponseEntity<List<Product>> response = testRestTemplate.exchange(
       PRODUCTS_PATH,
@@ -91,8 +88,6 @@ class ProductRestApiAdapterTest {
   @Test
   void createProduct() {
 
-    mockServerResponsePostProduct();
-
     Product product = new Product(
       "Barcode name create",
       "Product name create",
@@ -122,8 +117,6 @@ class ProductRestApiAdapterTest {
   @Test
   void getProduct() {
 
-    mockServerResponseGetProduct();
-
     Product response =
       testRestTemplate.getForObject(String.format("%s/%d", PRODUCTS_PATH, 1), Product.class);
 
@@ -135,14 +128,12 @@ class ProductRestApiAdapterTest {
     Assertions.assertEquals("Image url", response.imageUrl());
     Assertions.assertEquals(7.5, response.purchasePrice());
     Assertions.assertEquals(8.5, response.sellingPrice());
-    Assertions.assertEquals(null, response.suppliers());
-    Assertions.assertEquals(null, response.tags());
+    Assertions.assertNull(response.suppliers());
+    Assertions.assertNull(response.tags());
   }
 
   @Test
   void updateProduct() {
-
-    mockServerResponsePutProduct();
 
     Product product = new Product(
       "Barcode name updated",
@@ -185,8 +176,6 @@ class ProductRestApiAdapterTest {
   @Test
   void deleteProduct() {
 
-    mockServerResponseDeleteProduct();
-
     ResponseEntity<Void> response = testRestTemplate.exchange(
       String.format("%s/%d", PRODUCTS_PATH, 1),
       HttpMethod.DELETE,
@@ -196,119 +185,5 @@ class ProductRestApiAdapterTest {
 
     Assertions.assertNotNull(response);
     Assertions.assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-  }
-
-  private void mockServerResponseGetProducts() {
-
-    mockServerClient.when(
-      HttpRequest.request()
-        .withMethod("GET")
-        .withPath(PRODUCTS_MOCKSERVER_PATH)
-    ).respond(
-      HttpResponse.response()
-        .withStatusCode(200)
-        .withHeaders(new Header("Content-Type", "application/json"))
-        .withBody(json("""
-          [
-            {
-              "barcode": "Barcode name",
-              "name": "Product name",
-              "description": "Description",
-              "imageUrl": "Image url",
-              "purchasePrice": 7.5,
-              "sellingPrice": 8.5
-            },
-            {
-              "barcode": "Barcode name 2",
-              "name": "Product name 2",
-              "description": "Description 2",
-              "imageUrl": "Image url 2",
-             "purchasePrice": 8.5,
-             "sellingPrice": 9.5
-            }
-          ]
-          """))
-    );
-  }
-
-  private void mockServerResponsePostProduct() {
-
-    mockServerClient.when(
-      HttpRequest.request()
-        .withMethod("POST")
-        .withPath(PRODUCTS_MOCKSERVER_PATH)
-    ).respond(
-      HttpResponse.response()
-        .withStatusCode(200)
-        .withHeaders(new Header("Content-Type", "application/json"))
-        .withBody(json("""
-          {
-              "barcode": "Barcode name create",
-              "name": "Product name create",
-              "description": "Description create",
-              "imageUrl": "Image url create",
-              "purchasePrice": 1.2,
-              "sellingPrice": 1.8
-          }
-          """))
-    );
-  }
-
-  private void mockServerResponseGetProduct() {
-
-    mockServerClient.when(
-      HttpRequest.request()
-        .withMethod("GET")
-        .withPath(String.format("%s/%d", PRODUCTS_MOCKSERVER_PATH, 1))
-    ).respond(
-      HttpResponse.response()
-        .withStatusCode(201)
-        .withHeaders(new Header("Content-Type", "application/json"))
-        .withBody(json("""
-          {
-             "barcode": "Barcode name",
-             "name": "Product name",
-             "description": "Description",
-             "imageUrl": "Image url",
-             "purchasePrice": 7.5,
-             "sellingPrice": 8.5
-          }
-          """))
-    );
-  }
-
-  private void mockServerResponsePutProduct() {
-
-    mockServerClient.when(
-      HttpRequest.request()
-        .withMethod("PUT")
-        .withPath(String.format("%s/%d", PRODUCTS_MOCKSERVER_PATH, 1))
-    ).respond(
-      HttpResponse.response()
-        .withStatusCode(200)
-        .withHeaders(new Header("Content-Type", "application/json"))
-        .withBody(json("""
-          {
-            "barcode": "Barcode name updated",
-            "name": "Product name updated",
-            "description": "Description updated",
-            "imageUrl": "Image url updated",
-            "purchasePrice": 7.6,
-            "sellingPrice": 8.6
-          }
-          """))
-    );
-  }
-
-  private void mockServerResponseDeleteProduct() {
-
-    mockServerClient.when(
-      HttpRequest.request()
-        .withMethod("DELETE")
-        .withPath(String.format("%s/%d", PRODUCTS_MOCKSERVER_PATH, 1))
-    ).respond(
-      HttpResponse.response()
-        .withStatusCode(204)
-    );
   }
 }

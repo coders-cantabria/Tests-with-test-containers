@@ -19,19 +19,19 @@ public class ProductRestApiUseCase implements ProductRestApiUseCasePort {
     private final ProductRestApiPort productRestApiPort;
 
     @Override
-    public List<Product> getPosts() {
+    public List<Product> getProducts() {
 
         return productRestApiPort.getProducts().block();
     }
 
     @Override
-    public Product createPost(Product post) {
+    public Product createProduct(Product product) {
 
-        log.info("PostReceived to create: {}", post);
+        log.info("PostReceived to create: {}", product);
 
-        Mono<Product> createdPost = productRestApiPort.createProduct(post);
+        Mono<Product> createdPost = productRestApiPort.createProduct(product);
 
-        log.info("PostCreated {}", post);
+        log.info("PostCreated {}", product);
 
         return createdPost.block();
     }

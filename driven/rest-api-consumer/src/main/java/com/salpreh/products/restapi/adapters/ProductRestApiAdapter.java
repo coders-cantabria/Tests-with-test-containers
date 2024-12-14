@@ -4,7 +4,6 @@ import com.salpreh.products.application.models.Product;
 import com.salpreh.products.application.models.commons.IdName;
 import com.salpreh.products.application.ports.driven.ProductRestApiPort;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -15,14 +14,14 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class ProductRestApiAdapter implements ProductRestApiPort {
 
     private final WebClient webClient;
 
     @Override
     public Mono<List<Product>> getProducts() {
-        return webClient.get()
+
+      return webClient.get()
                 .uri("products")
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<>() {});

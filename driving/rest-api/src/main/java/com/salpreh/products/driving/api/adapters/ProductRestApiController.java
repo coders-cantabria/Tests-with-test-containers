@@ -24,13 +24,13 @@ public class ProductRestApiController {
     @GetMapping
     public ResponseEntity<List<Product>> getPosts() {
 
-        return ResponseEntity.ok(productRestApiUseCasePort.getPosts());
+        return ResponseEntity.ok(productRestApiUseCasePort.getProducts());
     }
 
     @PostMapping
     public ResponseEntity<Product> createPost(@RequestBody Product post) {
 
-        return ResponseEntity.ok(productRestApiUseCasePort.createPost(post));
+        return ResponseEntity.ok(productRestApiUseCasePort.createProduct(post));
     }
 
     @GetMapping(path = "/{id}")

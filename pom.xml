@@ -49,6 +49,11 @@
         <artifactId>workshop-web-products-kafka-producer</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.salpreh.products</groupId>
+        <artifactId>workshop-web-products-rest-api-consumer</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>org.testcontainers</groupId>

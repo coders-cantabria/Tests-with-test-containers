@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface ProductRestApiUseCasePort {
 
-    List<Product> getPosts();
+    List<Product> getProducts();
 
-    Product createPost(Product post);
+    Product createProduct(Product post);
 
     Product getPost(String id);
 

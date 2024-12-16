@@ -1,6 +1,8 @@
 package com.salpreh.products.tests.base;
 
 import com.salpreh.products.tests.utils.Scripts;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,6 +10,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
 
 @DirtiesContext
 @SpringBootTest
@@ -24,7 +27,11 @@ public class DbGenericContainerITTest {
     .withExposedPorts(5432)
     .withEnv("POSTGRES_DB", DB_NAME)
     .withEnv("POSTGRES_USER", DB_USER)
-    .withEnv("POSTGRES_PASSWORD", DB_PASSWORD);
+    .withEnv("POSTGRES_PASSWORD", DB_PASSWORD)
+    .waitingFor(new LogMessageWaitStrategy()
+      .withRegEx(".*database system is ready to accept connections.*\\s")
+      .withStartupTimeout(Duration.of(60, ChronoUnit.SECONDS))
+    );
 
   @DynamicPropertySource
   static void initProperties(DynamicPropertyRegistry registry) {

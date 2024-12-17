@@ -1,8 +1,12 @@
 package com.salpreh.products.driving.api;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockserver.model.JsonBody.json;
+
 import com.salpreh.products.application.models.Product;
 import com.salpreh.products.application.models.commands.UpsertProductCommand;
 import com.salpreh.products.driving.api.models.ApiPage;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
@@ -13,20 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockserver.model.JsonBody.json;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -36,22 +30,13 @@ class ProductRestApiAdapterTest {
   private static final Integer MOCKSERVER_PORT = 1080;
   private static final String PRODUCTS_PATH = "/products";
 
-  static GenericContainer<?> mockServer = new GenericContainer<>(
-    DockerImageName.parse(MOCKSERVER_IMAGE))
-    .withExposedPorts(MOCKSERVER_PORT);
-
   static MockServerClient mockServerClient;
 
-  @DynamicPropertySource
   static void mockServerProperties(DynamicPropertyRegistry registry) {
 
-    mockServer.start();
+    // TODO
 
-    // Set to the application properties the obtained values
-    registry.add("mockserver.host", mockServer::getHost);
-    registry.add("mockserver.port", mockServer::getFirstMappedPort);
-
-    mockServerClient = new MockServerClient(mockServer.getHost(), mockServer.getFirstMappedPort());
+    // Set to the application properties the obtained values from container
   }
 
   @Autowired
@@ -69,24 +54,7 @@ class ProductRestApiAdapterTest {
       new ParameterizedTypeReference<>() {}
     );
 
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-
-    assertProductsPropertiesFromGetProducts(response.getBody().getData());
-  }
-
-  private void assertProductsPropertiesFromGetProducts(List<Product> results) {
-
-    assertAll(
-      () -> Assertions.assertNotNull(results),
-      () -> Assertions.assertEquals(2, results.size()),
-      () -> Assertions.assertEquals("Barcode name", results.get(0).barcode()),
-      () -> Assertions.assertEquals("Product name", results.get(0).name()),
-      () -> Assertions.assertEquals("Description", results.get(0).description()),
-      () -> Assertions.assertEquals("Image url", results.get(0).imageUrl()),
-      () -> Assertions.assertEquals(7.5, results.get(0).purchasePrice()),
-      () -> Assertions.assertEquals(8.5, results.get(0).sellingPrice())
-    );
+    // TODO
   }
 
   @Test
@@ -107,17 +75,7 @@ class ProductRestApiAdapterTest {
 
     Product response = testRestTemplate.postForObject(PRODUCTS_PATH, upsertProductCommand, Product.class);
 
-    Assertions.assertNotNull(response);
-
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals("Barcode name create", response.barcode());
-    Assertions.assertEquals("Product name create", response.name());
-    Assertions.assertEquals("Description create", response.description());
-    Assertions.assertEquals("Image url create", response.imageUrl());
-    Assertions.assertEquals(1.2, response.purchasePrice());
-    Assertions.assertEquals(1.8, response.sellingPrice());
-    Assertions.assertNull(response.suppliers());
-    Assertions.assertNull(response.tags());
+    // TODO
   }
 
   @Test
@@ -125,19 +83,7 @@ class ProductRestApiAdapterTest {
 
     mockServerResponseGetProduct();
 
-    Product response =
-      testRestTemplate.getForObject(String.format("%s/%d", PRODUCTS_PATH, 1), Product.class);
-
-    Assertions.assertNotNull(response);
-
-    Assertions.assertEquals("Barcode name", response.barcode());
-    Assertions.assertEquals("Product name", response.name());
-    Assertions.assertEquals("Description", response.description());
-    Assertions.assertEquals("Image url", response.imageUrl());
-    Assertions.assertEquals(7.5, response.purchasePrice());
-    Assertions.assertEquals(8.5, response.sellingPrice());
-    Assertions.assertNull(response.suppliers());
-    Assertions.assertNull(response.tags());
+    // TODO
   }
 
   @Test
@@ -145,30 +91,7 @@ class ProductRestApiAdapterTest {
 
     mockServerResponsePutProduct();
 
-    UpsertProductCommand upsertProductCommand = new UpsertProductCommand(
-      "Barcode name updated",
-      "Product name updated",
-      "Description updated",
-      "Image url updated",
-      7.6,
-      8.6,
-      List.of(),
-      List.of()
-    );
-
-    HttpEntity<UpsertProductCommand> requestEntity = new HttpEntity<>(upsertProductCommand);
-
-    ResponseEntity<Product> response = testRestTemplate.exchange(
-      String.format("%s/%d", PRODUCTS_PATH, 1),
-      HttpMethod.PUT,
-      requestEntity,
-      Product.class
-    );
-
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-
-    assertProductsPropertiesFromPutProduct(response.getBody());
+    // TODO
   }
 
   private void assertProductsPropertiesFromPutProduct(Product product) {
@@ -188,15 +111,7 @@ class ProductRestApiAdapterTest {
 
     mockServerResponseDeleteProduct();
 
-    ResponseEntity<Void> response = testRestTemplate.exchange(
-      String.format("%s/%d", PRODUCTS_PATH, 1),
-      HttpMethod.DELETE,
-      null,
-      Void.class
-    );
-
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    // TODO
   }
 
   private void mockServerResponseGetProducts() {

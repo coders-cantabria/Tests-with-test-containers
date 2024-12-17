@@ -34,6 +34,8 @@ The barcode is composed of IAs, which are a 2-3 digit indicator that tells us wh
 - **testcontainers/workshop-db-solution**: Contains our version of the solution for the workshop about testing the database adapter with Testcontainers.
 - **testcontainers/workshop-kafka**: Contains the starting point for the workshop about testing the Kafka adapter with Testcontainers.
 - **testcontainers/workshop-kafka-solution**: Contains our version of the solution for the workshop about testing the Kafka adapter with Testcontainers.
+- **testcontainers/workshop-api**: Contains the starting point for the workshop about testing external API adapter with Testcontainers.
+- **testcontainers/workshop-api-solution**: Contains our version of the solution for the workshop about testing external API adapter with Testcontainers.
 
 ## How to run 🚀
 ### Requirements 🛠
